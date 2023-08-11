@@ -21,12 +21,13 @@ public class Tests {
     @DisplayName("Авторизация с валидным логином и паролем")
     void shouldBeSuccessfulEntry() {
         var loginPage = open("http://localhost:9999", LoginPage.class);
-        DataHelper.AuthInfo authInfo = DataHelper.getAuthInfo();
+        var authInfo = DataHelper.getAuthInfo();
         var verificationPage = loginPage.validLogin(authInfo);
+        verificationPage.verificationPageVisibility();
         var verificationCode = SQLHelper.getVerificationCode();
         verificationPage.validVerify(verificationCode);
-
     }
+
 
     @Test
     @DisplayName("Авторизация с рандомным логином и паролем")
