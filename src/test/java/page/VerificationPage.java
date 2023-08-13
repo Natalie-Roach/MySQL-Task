@@ -11,15 +11,21 @@ public class VerificationPage {
     private SelenideElement codeField = $("[data-test-id=code] input");
     private SelenideElement verifyButton = $("[data-test-id=action-verify]");
 
+    private SelenideElement errorNotification = $("[data-test-id='error-notification']");
+
     public void verificationPageVisibility() {
         codeField.shouldBe(visible);
     }
 
-    public DashboardPage validVerify(DataHelper.VerificationCode verificationCode) {
-        codeField.setValue(verificationCode.getCode());
-        verifyButton.click();
-//        return new DashboardPage();
+
+    public DashboardPage validVerify(String verificationCode) {
+        verify(verificationCode);
         return page(DashboardPage.class);
 
+    }
+
+    public void verify(String verificationCode) {
+        codeField.setValue(verificationCode);
+        verifyButton.click();
     }
 }

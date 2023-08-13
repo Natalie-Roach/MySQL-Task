@@ -25,7 +25,7 @@ public class Tests {
         var verificationPage = loginPage.validLogin(authInfo);
         verificationPage.verificationPageVisibility();
         var verificationCode = SQLHelper.getVerificationCode();
-        verificationPage.validVerify(verificationCode);
+        verificationPage.validVerify(verificationCode.getCode());
     }
 
 
@@ -33,7 +33,7 @@ public class Tests {
     @DisplayName("Авторизация с рандомным логином и паролем")
     void shouldBeShownError() {
         var loginPage = open("http://localhost:9999", LoginPage.class);
-        var authInfo = DataHelper.user();
+        var authInfo = DataHelper.generateRandomUser();
         loginPage.validLogin(authInfo);
         loginPage.errorNotificationVisible();
     }
@@ -42,7 +42,7 @@ public class Tests {
     @DisplayName("Невалидный пользователь")
     void shouldBeInvalidUser() {
         var loginPage = open("http://localhost:9999", LoginPage.class);
-        var authInfo = DataHelper.user();
+        var authInfo = DataHelper.generateRandomUser();
         loginPage.validLogin(authInfo);
         loginPage.errorNotificationVisible();
     }
@@ -52,7 +52,7 @@ public class Tests {
     @DisplayName("Невалидный пароль")
     public void shouldNotValidLogin() {
         var loginPage = open("http://localhost:9999", LoginPage.class);
-        var authInfo = new DataHelper.AuthInfo(DataHelper.user().getLogin(), DataHelper.getAuthInfo().getPassword());
+        var authInfo = new DataHelper.AuthInfo(DataHelper.generateRandomUser().getLogin(), DataHelper.getAuthInfo().getPassword());
         loginPage.validLogin(authInfo);
         loginPage.errorNotificationVisible();
     }
@@ -61,15 +61,15 @@ public class Tests {
     @DisplayName("Три раза неправильный пароль")
     public void shouldNotValidPasswordThreeTimes() {
         var loginPage = open("http://localhost:9999", LoginPage.class);
-        var authInfoFirst = new DataHelper.AuthInfo(DataHelper.getAuthInfo().getLogin(), DataHelper.user().getPassword());
+        var authInfoFirst = new DataHelper.AuthInfo(DataHelper.getAuthInfo().getLogin(), DataHelper.generateRandomUser().getPassword());
         loginPage.validLogin(authInfoFirst);
         loginPage.errorNotificationVisible();
         loginPage.cleanStrings();
-        var authInfoSecond = new DataHelper.AuthInfo(DataHelper.getAuthInfo().getLogin(), DataHelper.user().getPassword());
+        var authInfoSecond = new DataHelper.AuthInfo(DataHelper.getAuthInfo().getLogin(), DataHelper.generateRandomUser().getPassword());
         loginPage.validLogin(authInfoSecond);
         loginPage.errorNotificationVisible();
         loginPage.cleanStrings();
-        var authInfoThird = new DataHelper.AuthInfo(DataHelper.getAuthInfo().getLogin(), DataHelper.user().getPassword());
+        var authInfoThird = new DataHelper.AuthInfo(DataHelper.getAuthInfo().getLogin(), DataHelper.generateRandomUser().getPassword());
         loginPage.validLogin(authInfoThird);
         loginPage.getBlockError();
     }

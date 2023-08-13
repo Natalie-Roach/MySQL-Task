@@ -6,44 +6,51 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
+// +
 public class DataHelper {
     private static Faker faker = new Faker();
 
+    // +
     private DataHelper() {
-    }
-
-    @Value
-    public static class AuthInfo {
-        private String login;
-        private String password;
-    }
-
-    @Value
-    public static class VerificationCode {
-        private String code;
-
     }
 
     public static AuthInfo getAuthInfo() {
         return new AuthInfo("vasya", "qwerty123");
     }
 
-    private static String login() {
+
+    private static String generateRandomLogin() {
         return faker.name().username();
     }
 
-    private static String pass() {
+
+    private static String generateRandomPassword() {
         return faker.internet().password();
     }
 
-    public static AuthInfo user() {
-        return new AuthInfo(login(), pass());
+
+    public static AuthInfo generateRandomUser() {
+        return new AuthInfo(generateRandomLogin(), generateRandomPassword());
     }
 
 
-    public static VerificationCode getVerificationCode() {
+    public static VerificationCode generateRandomVerificationCode() {
         return new VerificationCode(faker.numerify("#####"));
     }
+
+
+    @Value
+    public static class AuthInfo {
+        String login;
+        String password;
+    }
+
+    @Value
+    public static class VerificationCode {
+        String code;
+
+    }
+
 
     @Data
     @NoArgsConstructor
